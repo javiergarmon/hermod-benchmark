@@ -1,0 +1,25 @@
+{
+    "name": "hermod-benchmark",
+    "description": "Blazing fast communication between Node.js processes",
+    "main": "./lib/hermod",
+    "author": "Javier Garmon",
+    "version": "0.0.1",
+    "repository" : {
+        "type" : "git",
+        "url" : "https://github.com/javiergarmon/hermod.git"
+    },
+    "bugs" : {
+        "url" : "https://github.com/javiergarmon/hermod/issues"
+    },
+    "dependencies" : {
+        "async" : ">=0.0.0",
+        "dnode" : ">=0.0.0",
+        "hermod" : "git://github.com/javiergarmon/hermod.git"
+    },
+    "licenses" : [
+        {
+            "type" : "MIT",
+            "url" : "https://github.com/javiergarmon/hermod-benchmark/raw/master/LICENSE"
+        }
+    ]
+}
