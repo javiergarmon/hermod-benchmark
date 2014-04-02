@@ -12,9 +12,10 @@
         "url" : "https://github.com/javiergarmon/hermod/issues"
     },
     "dependencies" : {
-        "async" : ">=0.0.0",
-        "dnode" : ">=0.0.0",
-        "hermod" : "git://github.com/javiergarmon/hermod.git"
+        "async" : "0.6.2",
+        "axon" : "2.0.0",
+        "dnode" : "1.2.0",
+        "hermod" : "0.0.2"
     },
     "licenses" : [
         {
