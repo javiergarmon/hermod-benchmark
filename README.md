@@ -3,7 +3,10 @@ hermod-benchmark
 
 hermod (https://github.com/javiergarmon/hermod) it's a fast module that communicates processes blazing fast.
 
-In this benchmark we currently compare the performance with dnode (https://github.com/substack/dnode) executing a simple function 10K times.
+In this benchmark we currently compare the performance executing a simple function 10K times with other modules:
+
+* axon (https://github.com/visionmedia/axon).
+* dnode (https://github.com/substack/dnode).
 
 The benchmark result is:
 ```
