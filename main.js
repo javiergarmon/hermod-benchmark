@@ -51,7 +51,12 @@ setTimeout( function(){
 	async.series([
 
 		function( callback ){
-			
+			console.log( ' Series benchmark\n' );
+			callback();
+		},
+
+		function( callback ){
+
 			var start = Date.now();
 
 			async.timesSeries( iterations, function( i, callback ){
@@ -64,7 +69,7 @@ setTimeout( function(){
 
 				axonTime = Date.now() - start;
 
-				console.log( ' axon   : ' + iterations + ' ops takes ' + axonTime + 'ms. ' + ( ( iterations * 1000 ) / axonTime ).toFixed( 3 ) + 'ops/s.' );
+				console.log( '   axon   : ' + iterations + ' ops takes ' + axonTime + ' ms. ' + ( ( iterations * 1000 ) / axonTime ).toFixed( 3 ) + ' ops/s' );
 
 				callback();
 
@@ -73,7 +78,7 @@ setTimeout( function(){
 		},
 
 		function( callback ){
-			
+
 			var start = Date.now();
 
 			async.timesSeries( iterations, function( i, callback ){
@@ -86,7 +91,7 @@ setTimeout( function(){
 
 				dnodeTime = Date.now() - start;
 
-				console.log( ' dnode  : ' + iterations + ' ops takes ' + dnodeTime + 'ms. ' + ( ( iterations * 1000 ) / dnodeTime ).toFixed( 3 ) + 'ops/s.' );
+				console.log( '   dnode  : ' + iterations + ' ops takes ' + dnodeTime + ' ms. ' + ( ( iterations * 1000 ) / dnodeTime ).toFixed( 3 ) + ' ops/s' );
 
 				callback();
 
@@ -108,21 +113,99 @@ setTimeout( function(){
 
 				hermodTime = Date.now() - start;
 
-				console.log( ' hermod : ' + iterations + ' ops takes ' + hermodTime + 'ms. ' + ( ( iterations * 1000 ) / hermodTime ).toFixed( 3 ) + 'ops/s.' );
+				console.log( '   hermod : ' + iterations + ' ops takes ' + hermodTime + ' ms. ' + ( ( iterations * 1000 ) / hermodTime ).toFixed( 3 ) + ' ops/s' );
 
 				callback();
 				
 			});
 
+		},
+
+		function( callback ){
+			console.log( '\n   hermod is x' + ( axonTime  / hermodTime ).toFixed( 3 ) + ' times faster than axon' );
+			console.log( '   hermod is x' + ( dnodeTime / hermodTime ).toFixed( 3 ) + ' times faster than dnode\n' );
+			callback();
+		},
+
+		function( callback ){
+			console.log( ' Parallel benchmark\n' );
+			callback();
+		},
+
+		function( callback ){
+
+			var start = Date.now();
+
+			async.times( iterations, function( i, callback ){
+				
+				axonClient.send( 'beep', function(){
+					callback();
+				});
+
+			}, function(){
+
+				axonTime = Date.now() - start;
+
+				console.log( '   axon   : ' + iterations + ' ops takes ' + axonTime + ' ms. ' + ( ( iterations * 1000 ) / axonTime ).toFixed( 3 ) + ' ops/s' );
+
+				callback();
+
+			});
+
+		},
+
+		function( callback ){
+
+			var start = Date.now();
+
+			async.times( iterations, function( i, callback ){
+				
+				dnodeClient.transform( 'beep', function(){
+					callback();
+				});
+
+			}, function(){
+
+				dnodeTime = Date.now() - start;
+
+				console.log( '   dnode  : ' + iterations + ' ops takes ' + dnodeTime + ' ms. ' + ( ( iterations * 1000 ) / dnodeTime ).toFixed( 3 ) + ' ops/s' );
+
+				callback();
+
+			});
+
+		},
+
+		function( callback ){
+			
+			var start = Date.now();
+
+			async.times( iterations, function( i, callback ){
+				
+				hermodClient.request( 'transform', 'beep', function(){
+					callback();
+				});
+
+			}, function(){
+
+				hermodTime = Date.now() - start;
+
+				console.log( '   hermod : ' + iterations + ' ops takes ' + hermodTime + ' ms. ' + ( ( iterations * 1000 ) / hermodTime ).toFixed( 3 ) + ' ops/s' );
+
+				callback();
+				
+			});
+
+		},
+
+		function( callback ){
+			console.log( '\n   hermod is x' + ( axonTime  / hermodTime ).toFixed( 3 ) + ' times faster than axon' );
+			console.log( '   hermod is x' + ( dnodeTime / hermodTime ).toFixed( 3 ) + ' times faster than dnode\n' );
+			callback();
 		}
 
 	], function(){
-		
-		console.log( '\n hermod is x' + ( axonTime  / hermodTime ).toFixed( 3 ) + ' times faster than axon' );
-		console.log( ' hermod is x' + ( dnodeTime / hermodTime ).toFixed( 3 ) + ' times faster than dnode\n' );
-
 		process.kill()
-
 	});
 
 }, 1000 );
